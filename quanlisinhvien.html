@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <style type="text/css">
+         body {
+            width: 1000px;
+            padding : 20px 0;
+            margin:auto;
+         }
+         .form-student {
+            border:1px solid #FF3333;
+            padding:20px;
+            width:300px;
+            margin:20px auto;
+         }
+         hr{
+            width: 350px;
+            margin-left: 0px;
+         }
+         td{
+            width: 200px;
+            height: 30px;
+         }
+         .error {
+            color:red;
+            display: none;
+         }
+      </style>
+   </head>
+   <body>
+      <div class="form-student">
+         <button id='open' type='button' data-attr='none' onclick='openForm(event)'>Add Student</button>
+      <div class='form'>
+         <h3>Quản lý học sinh</h3>
+            <p>Name :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id="name" type="text" placeholder= nhapten></p>
+            <span id='errname' class='error'>Name is empty</span>
+            <p>ScoreJS : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id="jsscore" type="text" placeholder= nhapdiemJS></p>
+            <p>ScoreAndroid: <input id="androidscore" type="text" placeholder=nhapdiemAndroid></p>
+            <p>Class :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input id="class" type="text" placeholder=nhapLop></p>
+               <button onclick="add()" style="width:100px; color:orange; margin-left: 100px">add</button>
+            <br>
+         </div>
+      </div>
+      <div>
+         <table border= "1">
+            <tr>
+               <th colspan="7">DANH SÁCH SINH VIÊN</th>
+            </tr>
+            <tr>
+               <td>Tên</td>
+               <td>Điểm JS</td>
+               <td>Điểm Android</td>
+               <td>Điểm trung bình</td>
+               <td>Loại</td>
+               <td>Lớp</td>
+               <td>Delete</td>
+            </tr>
+            <tr>
+               <td id="ten"></td>
+               <td id="diem_js"></td>
+               <td id="diem_android"></td>
+               <td id="average"></td>
+               <td id="type"></td>
+               <td id="lop"></td>
+               <td id="delete"></td>
+            </tr>
+         </table>
+         </form>
+      </div>
+      <script type="text/javascript">
+         function add(){
+            var nameST = document.getElementById('name').value;
+            var scoreJS = document.getElementById('jsscore').value;
+            var scoreAndroid = document.getElementById('androidscore').value;
+            var classST = document.getElementById('class').value;
+            var average = (Number(scoreJS) + Number(scoreAndroid))/2;
+         if(validateName(nameST)) {
+            localStorage.setItem("name", nameST);
+            localStorage.setItem("jsscore", scoreJS);
+            localStorage.setItem("androidscore", scoreAndroid);
+            localStorage.setItem("class", classST);
+            localStorage.setItem("average", average);
+            localStorage.setItem("type", average > 8 ? 'Very Good' : average > 7 ? 'Good' : 'Normal');
+            get_item("name", "ten")
+            get_item("jsscore", "diem_js")
+            get_item("androidscore", "diem_android")
+            get_item("class", "lop")
+            get_item("average", "average")
+            get_item("type", "type")
+            btn_delete("delete")
+            var x = document.createElement("TR");
+            document.getElementById("delete").appendChild(btn_delete('12e')); 
+         }
+         }
+         function get_item(value1, value2){
+            var x = document.createElement("TR");
+            var t = document.createTextNode(localStorage.getItem(value1));
+            x.appendChild(t);
+            document.getElementById(value2).appendChild(x);
+         }
+         
+         function btn_delete(value) {
+            console.log(document.getElementById(value),value)
+            var x = document.createElement("TR");
+            var x1 = document.createElement("INPUT");
+            x1.setAttribute("type", "button");
+            x1.setAttribute("value", "Delete");
+            document.getElementById(value).appendChild(x);
+            document.getElementById(value).appendChild(x1);
+         }
+         
+         function funciton_delete(){
+            localStorage.removeItem("name");
+         }
+            let students = [];
+            const student = {
+            name: string = '',
+            jsscore: float = 0.2,
+            androidscore: float = 0.5,
+            class: string = ''
+         }
+            localStorage.setItem('student', JSON.stringify(student));
+            let newItem = '';  
+         function removeItem(e,name) {
+            e.preventDefault();
+            const newStu = students.filter(item => {
+            return item.name !== name;
+            })
+            localStorage.setItem('student', JSON.stringify(newStu));
+            displayTab();
+         }
+         
+         function getValue(event) {
+            student[event.target.name] = event.target.value;
+            console.log(event, student)
+            }
+            var status = true;
+         function openForm(e)
+         {
+            const status = e.target.getAttribute('data-attr');
+            document.querySelector('.form').style.display = status == 'dis' ? 'block' : 'none' ;
+            if(status == 'dis') {
+            document.querySelector('#open').setAttribute('data-attr','none');
+            } else {
+            document.querySelector('#open').setAttribute('data-attr','dis');
+         }
+         }     
+         function validateName(name)
+            {
+            if(name.length)
+            {
+            document.querySelector('#errname').style.display = 'none';
+            return true;
+            }else {
+            document.querySelector('#errname').style.display = 'block';
+            return false;
+         }
+         }
+      </script>
+   </body>
+</html>
